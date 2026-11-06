@@ -5,8 +5,9 @@
 - Commit: `377afc6bf7655fea6fb1d689eac3976e7697626f`
 - Access: private repository; use this machine's existing authorized GitHub access.
 
-Use the exact commit above. If access is unavailable, finish installing this
-public Skill and report that code download needs authorization. Do not copy
+Use the exact commit above. If access is unavailable, install this public Skill,
+ask the user to log in to GitHub on this machine, and resume after access succeeds.
+Accept any required token only through the local credential tool. Do not copy
 another machine's credentials, change repository visibility, or substitute an
 upstream release. The public Skill alone does not grant access to private code.
 

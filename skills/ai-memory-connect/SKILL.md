@@ -36,6 +36,14 @@ Read [the source pin](references/runtime.md) for the exact code repository and r
 Use that revision's documentation and CLI `--help`; do not install upstream
 `latest` and assume it contains this fork's personal-knowledge features.
 
+The code repository is private. First try this machine's existing authorized
+GitHub access. If it is missing or insufficient, ask the user to complete GitHub
+login on this machine, then resume. If a token is needed, have the user enter it
+through the local credential tool; never ask them to paste it into this Skill,
+repository, or chat. Store credentials in the host credential manager or an
+owner-only credential file, never in a remote URL. Do not publish private code
+or change repository visibility to bypass authorization.
+
 Inspect OS/architecture, persistent storage, available memory and process manager.
 Keep checkout, configuration and knowledge under persistent user storage, not
 `/tmp`. SQLite is bundled: no separate database server is needed.
