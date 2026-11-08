@@ -109,7 +109,7 @@ For each task, send explicit workspace/project and current domain, device, tools
 and capabilities where supported. Coding and non-coding agents share knowledge;
 task context chooses what is relevant. Role defaults are not access permissions.
 
-## 4. Connect learning and optional knowledge sync
+## 4. Connect learning and automatic knowledge sync
 
 Keep native lifecycle capture as the single source when available. Otherwise
 follow `docs/external-lifecycle.md`: user dialogue, documents, tool output and
@@ -123,16 +123,32 @@ provider with `llm-test`, then exercise incremental `/admin/profile/process`.
 Without a provider, deliberate memory reads/writes can work; report automatic
 extraction as unavailable rather than claiming the whole learning loop works.
 
-The public Skill repository and code repository are not the user's knowledge repo.
+The public Skill, private program code and private knowledge are separate repositories.
+Code-repository access never implies permission to read personal knowledge. Check
+GitHub authorization separately for each repository; use repository-scoped grants
+where available. Background sync must never target the program-code repository.
 For cross-machine sharing, use the user's explicitly selected private knowledge
 repository and scopes with `companions/ai-memory-wikisync/README.md`. Build that
 companion separately if needed. Sync Markdown knowledge, evidence and portable
 Skills; never sync live SQLite, authentication files or machine login state.
 Do not import repository test fixtures as real personal knowledge.
 
-One machine needs only one sync worker for the shared service. Configure automatic
-commit/push only when requested; report whether it is running. Retain Git conflicts
-for resolution, without force pushes or automatic selection of one side.
+Automatic knowledge sync is part of onboarding. Once the owner has selected the
+private knowledge repository and scopes and completed GitHub authorization, build
+the wikisync companion and configure one persistent worker per checkout using
+`repository ... --apply --watch 3600 --max-pending-files 100`. Either one hour since
+the last successful exchange or 100 changed files triggers Git exchange; both are
+configurable. The Rust worker polls every 30 seconds, fetches remote updates even
+when local knowledge is unchanged, and retains failed pushes across restarts.
+Use the host's actual persistent process manager and protected credential storage.
+Verify it comes back after process restart and exchanges a harmless scoped test
+change. Do not claim a detached shell process survives VM replacement.
+
+Only knowledge is automatically committed and pushed. Program-code changes remain
+manual. Never infer the private knowledge destination from the code remote. If the
+knowledge repository or authorized scopes are missing, ask the user for those and
+report sync as pending setup. Retain Git conflicts for resolution, without force
+pushes or automatic selection of one side.
 
 ## 5. Verify and hand back
 

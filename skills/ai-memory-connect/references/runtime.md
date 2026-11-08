@@ -2,7 +2,7 @@
 
 - Code: https://github.com/KUSTLiWei/ai-memory
 - Branch: `feat/personal-coding-memory`
-- Commit: `377afc6bf7655fea6fb1d689eac3976e7697626f`
+- Commit: `5a420f95c3d943fe551080e216feea75d7066621`
 - Access: private repository; use this machine's existing authorized GitHub access.
 
 Use the exact commit above. If access is unavailable, install this public Skill,
