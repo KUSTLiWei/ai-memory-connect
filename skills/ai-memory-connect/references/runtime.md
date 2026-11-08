@@ -2,7 +2,7 @@
 
 - Code: https://github.com/KUSTLiWei/ai-memory
 - Branch: `feat/personal-coding-memory`
-- Commit: `5a420f95c3d943fe551080e216feea75d7066621`
+- Commit: `7f8327b6bdf79bfc389236e51ecb5120ba6ee0d2`
 - Access: private repository; use this machine's existing authorized GitHub access.
 
 Use the exact commit above. If access is unavailable, install this public Skill,
@@ -23,3 +23,8 @@ only as the corresponding installation step needs them.
 
 Knowledge storage is chosen separately by the owner. This public repository
 never supplies a private knowledge URL, token, or preauthorized model account.
+
+For Muse native capture and agent-owned inference, read only the corresponding
+sections of `companions/ai-memory-relay/README.md` and
+`companions/ai-memory-agent-bridge/README.md`. Agent source modules are in
+`crates/ai-memory-workstream/src/adapters/`; Codex keeps its native capture path.

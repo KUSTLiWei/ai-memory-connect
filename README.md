@@ -37,3 +37,17 @@
 代码权限不代表记忆权限。已有 Knowledge 仓库就复用，没有才新建私有仓库；没有访问
 权限先请用户登录。自动同步默认每小时或累计 100 个变更文件触发，两项可配置。
 模型提取授权与 GitHub 授权分别配置。具体操作仅在对应 Skill 中展开。
+
+Model configuration, Muse conversation capture and host-agent model work each
+have a separate Skill selected by the router. The runtime keeps its existing
+extraction pipeline; host-specific adapters supply events and inference.
+
+## Agent entries
+
+Start with the short router, or use the known host's entry directly:
+
+- [Codex](skills/ai-memory-codex/SKILL.md): native hooks and Codex transcript adapter.
+- [Muse desktop/cloud](skills/ai-memory-muse/SKILL.md): native chat export and local agent-model worker.
+
+Both load shared installation, model or sync guidance only when needed. Adding
+an agent means adding its entry and source adapter, not copying the memory engine.

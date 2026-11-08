@@ -40,12 +40,11 @@ follow `docs/external-lifecycle.md`: user dialogue, documents, tool output and
 agent reports keep their real source and stable event identity. Never relabel
 agent conclusions as user statements or install two capture paths for one event.
 
-For contextual learning, configure `[profile] context_on_demand = true` and the
-user's authorized extraction provider according to `docs/cross-project-profile.md`.
-Authenticate on this machine; do not copy another computer's login. Check the
-provider with `llm-test`, then exercise incremental `/admin/profile/process`.
-Without a provider, deliberate memory reads/writes can work; report automatic
-extraction as unavailable rather than claiming the whole learning loop works.
+Muse cloud uses [Muse capture](https://github.com/KUSTLiWei/ai-memory-connect/blob/main/skills/ai-memory-muse-capture/SKILL.md)
+for its verified paginated conversation format. Configure this deployment's own
+model through [model setup](https://github.com/KUSTLiWei/ai-memory-connect/blob/main/skills/ai-memory-model-setup/SKILL.md).
+Load only the missing step. Without verified capture and extraction, report
+memory reads/writes separately from automatic learning.
 
 Done when this agent can call the intended memory interface and the requested
 capture/extraction path is exercised. Model login is separate from GitHub login.
