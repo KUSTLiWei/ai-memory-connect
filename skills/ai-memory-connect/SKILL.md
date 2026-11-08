@@ -127,6 +127,14 @@ The public Skill, private program code and private knowledge are separate reposi
 Code-repository access never implies permission to read personal knowledge. Check
 GitHub authorization separately for each repository; use repository-scoped grants
 where available. Background sync must never target the program-code repository.
+Resolve the knowledge repository during setup:
+- If the user already has one, reuse that repository and clone its existing branch
+  before exporting local knowledge. Keep existing directories and scope mappings.
+- If none exists, create a dedicated **private** knowledge repository in the user's
+  chosen account under the installation authorization. If that authorization or
+  account choice is missing, ask for it; an inaccessible repository is not absent.
+- Never create a new knowledge repository just because this machine has no clone.
+
 For cross-machine sharing, use the user's explicitly selected private knowledge
 repository and scopes with `companions/ai-memory-wikisync/README.md`. Build that
 companion separately if needed. Sync Markdown knowledge, evidence and portable
@@ -140,6 +148,11 @@ the wikisync companion and configure one persistent worker per checkout using
 the last successful exchange or 100 changed files triggers Git exchange; both are
 configurable. The Rust worker polls every 30 seconds, fetches remote updates even
 when local knowledge is unchanged, and retains failed pushes across restarts.
+Each Git exchange must fetch and merge the remote before pushing. The worker first
+checkpoints local allowed changes in a local commit, then fetches/merges, imports
+merged knowledge, and pushes. That local checkpoint is not an upload. A conflict
+stops the push; preserve both sides and ask for resolution. Authentication failure
+requires login, not a replacement repository or force push.
 Use the host's actual persistent process manager and protected credential storage.
 Verify it comes back after process restart and exchanges a harmless scoped test
 change. Do not claim a detached shell process survives VM replacement.
