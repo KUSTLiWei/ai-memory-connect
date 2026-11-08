@@ -1,50 +1,39 @@
 # ai-memory-connect
 
-给 Agent 一个链接，让它在自己的电脑上接入个人知识库：**已有服务就共用，没有才安装。**
+**一个短入口，按当前任务只读需要的 Skill。** 把这个仓库链接交给 Agent 即可：
 
-把下面这句话发给 Muse、Codex 或其他能操作自己环境的 Agent：
+> 请读取这个仓库的 README，进入 ai-memory-connect 导航，只加载完成当前任务需要的 Skill，复用已有服务和配置。
 
-> 请读取 https://github.com/KUSTLiWei/ai-memory-connect ，安装其中的 ai-memory-connect Skill，并按 Skill 完成接入。先检查本机是否已有可复用服务；有就接入，没有再安装。由你操作自己的运行环境，完成后汇报实际读写、自动提取和 Git 同步状态。
+## 从这里开始
 
-```mermaid
-flowchart TD
-    A[Agent 下载这个 Skill] --> B{本机已有适合的记忆服务？}
-    B -->|有| C[连接现有服务]
-    B -->|没有| D[安装 Rust 程序和本地 SQLite 存储]
-    C --> E[安装使用 Skill 和任务路由]
-    D --> E
-    E --> F[验证读取、写入与纠正]
-    F --> G[配置私有知识仓库后台同步]
-```
+读取 [总入口 skills/ai-memory-connect/SKILL.md](skills/ai-memory-connect/SKILL.md)。
+入口只负责判断下一步，不包含整套安装操作。
 
-## 安装 Skill
+| 当前要做什么 | 对应 Skill |
+|---|---|
+| 缺程序、服务停了、版本不兼容 | [安装与恢复](skills/ai-memory-install/SKILL.md) |
+| GitHub 私有仓库没有访问权限 | [授权登录](skills/ai-memory-github-auth/SKILL.md) |
+| 新 Agent 接入、配置采集或自动提取 | [Agent 接入](skills/ai-memory-agent-setup/SKILL.md) |
+| 拉取／推送知识、配置后台同步 | [知识同步](skills/ai-memory-knowledge-sync/SKILL.md) |
+| 检查刚才的改动是否实际有效 | [按需验收](skills/ai-memory-verify/SKILL.md) |
 
-1. 下载此仓库，读取 [`skills/ai-memory-connect/SKILL.md`](skills/ai-memory-connect/SKILL.md)。
-2. 将 `skills/ai-memory-connect/` 复制到当前 Agent 实际使用的 Skill 目录。
-3. 保留 Skill 目录中的 `references/`，确认 Agent 能发现此 Skill，再执行接入流程。
+每个 Skill 是独立目录，包含自己的 `SKILL.md`。从 GitHub 读取对应文件即可；需要
+本地安装时，只下载选中的 Skill 到当前 Agent 的技能目录。文件链接可从 GitHub
+页面、raw 文件或 GitHub 工具读取，不要求 clone 整个仓库。存在引用时仅在该步骤
+需要时读取；不要递归打开全部链接、拼成一个大提示词或写进全局指令。
 
-同一台机器上的多个 Agent 共用一个服务和一份本地数据；不同机器各自运行服务，
-通过另行授权的私有知识仓库交换知识。MCP 是访问接口，不要求服务固定运行在某台 Mac。
+例如：“同步知识库” → 只读知识同步；缺 GitHub 权限 → 再读授权，完成后返回同步。
+只在确实缺少程序时读取安装。完整新设备接入也逐步加载，跳过已完成的阶段。
+目录里有多个 Skill 不表示它们的正文需要同时进入上下文。
 
-此仓库只放公开安装说明，不放个人记忆或凭据。自动提取需要本机模型授权；自动
-GitHub 同步由安装流程配置后台程序：每小时或累计 100 个变更文件，任一达标即同步，
-两项可调整。程序代码仍手动同步。缺少私有知识仓库或授权时，Agent 会向你询问；
-实际推送和重启恢复通过后才报告同步已启用。
+## 仓库和权限
 
-代码来源和固定版本见 [固定程序版本](skills/ai-memory-connect/references/runtime.md)。本仓库提供接入 Skill，不分发预编译程序。
+| 仓库 | 放什么 | 同步方式 |
+|---|---|---|
+| 本公开仓库 | 入口与接入 Skills，不放记忆或密钥 | 按需下载说明 |
+| 私有程序仓库 | Rust 程序、测试和开发文档 | 开发时手动提交 |
+| 私有 Knowledge 仓库 | 个人知识、证据和可移植技能 | 后台自动同步，先拉再推 |
 
-程序和个人知识库保持私有。Agent 先使用本机已有的 GitHub 授权；没有权限时请你在
-该机器登录，成功后继续。需要密钥时通过本机凭据工具录入，不写进 Skill、仓库或聊天。
-Skill 本身可公开下载，不附带任何访问权限。
-
-## 两个私有仓库的区别
-
-| 仓库 | 放什么 | 怎么同步 | 谁需要权限 |
-|---|---|---|---|
-| 程序代码仓库 | Rust 程序、测试、开发文档 | 开发时手动提交 | 程序维护者 |
-| Knowledge 仓库 | 个人知识、证据、可移植技能 | 后台按时间或增量自动同步 | 获准使用个人记忆的 Agent |
-
-本公开仓库只提供接入 Skill。安装时已有 Knowledge 仓库就复用并先克隆；没有才在
-用户指定账号下新建私有仓库。没有访问权限不等于仓库不存在，应先请用户登录。
-每次交换先拉取并合并远端，再推送；本地变更会先做本地提交防止丢失，冲突时停止
-推送并保留双方内容，不能强推覆盖。
+代码权限不代表记忆权限。已有 Knowledge 仓库就复用，没有才新建私有仓库；没有访问
+权限先请用户登录。自动同步默认每小时或累计 100 个变更文件触发，两项可配置。
+模型提取授权与 GitHub 授权分别配置。具体操作仅在对应 Skill 中展开。
